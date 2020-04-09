@@ -1,9 +1,9 @@
 package nasa
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
 	"fmt"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestApod(t *testing.T) {
@@ -13,7 +13,7 @@ func TestApod(t *testing.T) {
 }
 
 func TestFeed(t *testing.T) {
-	res, err := Feed("2015-09-07","2015-09-08")
+	res, err := Feed("2015-09-07", "2015-09-08")
 	assert.Nil(t, err)
 	fmt.Println("res:", string(res))
 }

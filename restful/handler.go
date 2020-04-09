@@ -1,28 +1,56 @@
 package restful
 
 import (
-	"github.com/qiangxue/fasthttp-routing"
 	"encoding/json"
 	"github.com/ontio/ontology/common/log"
+	"github.com/ontio/saga/config"
 	"github.com/ontio/saga/core/nasa"
+	"github.com/qiangxue/fasthttp-routing"
+	"sync"
 )
 
+var DefMap *sync.Map
+
 func Apod(ctx *routing.Context) error {
-	res, err := nasa.Apod()
+	nas, err := getNasa()
+	if err != nil {
+		return writeResponse(ctx, ResponsePack(INTER_ERROR, err))
+	}
+	res, err := nas.Apod()
 	if err != nil {
 		return writeResponse(ctx, ResponsePack(INTER_ERROR, err))
 	}
 	return writeResponse(ctx, ResponseSuccess(res))
 }
 
-func Feed(ctx *routing.Context) error{
+func Feed(ctx *routing.Context) error {
 	startDate, endDate := ParseFeedParam(ctx)
 	//TODO param check
-	res, err := nasa.Feed(startDate, endDate)
+	nas, err := getNasa()
+	if err != nil {
+		return writeResponse(ctx, ResponsePack(INTER_ERROR, err))
+	}
+	res, err := nas.Feed(startDate, endDate)
 	if err != nil {
 		return writeResponse(ctx, ResponsePack(INTER_ERROR, err))
 	}
 	return writeResponse(ctx, ResponseSuccess(res))
+}
+
+func getNasa() (*nasa.Nasa, error) {
+	var nas *nasa.Nasa
+	val, ok := DefMap.Load(config.NASA_NAME)
+	if !ok || val == nil {
+		var err error
+		nas, err = nasa.NewNasa()
+		if err != nil {
+			return nil, err
+		}
+		DefMap.Store(config.NASA_NAME, nas)
+	} else {
+		nas = val.(*nasa.Nasa)
+	}
+	return nas, nil
 }
 
 func writeResponse(ctx *routing.Context, res interface{}) error {

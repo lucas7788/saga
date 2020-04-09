@@ -19,14 +19,15 @@ func ResponseSuccess(result interface{}) map[string]interface{} {
 		"Version": "1.0.0",
 	}
 }
+
 var ErrMap = map[int64]string{
-	SUCCESS:                     "SUCCESS",
-	PARA_ERROR:                  "PARAMETER ERROR",
+	SUCCESS:     "SUCCESS",
+	PARA_ERROR:  "PARAMETER ERROR",
 	INTER_ERROR: "INTER_ERROR",
 }
 
 const (
-	SUCCESS                     = 1
-	PARA_ERROR                  = 40000
+	SUCCESS     = 1
+	PARA_ERROR  = 40000
 	INTER_ERROR = 40001
 )

@@ -13,6 +13,12 @@ var (
 type Config struct {
 	RestPort    uint   `json:"rest_port"`
 	Version     string `json:"version"`
+	ProjectDBHost      string  `json:"projectdb_host"`
+	ProjectDBPort      string  `json:"projectdb_port"`
+	ProjectDBUrl       string  `json:"projectdb_url"`
+	ProjectDBUser      string  `json:"projectdb_user"`
+	ProjectDBPassword  string  `json:"projectdb_password"`
+	ProjectDBName      string  `json:"projectdb_name"`
 }
 
 

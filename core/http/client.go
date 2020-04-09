@@ -1,9 +1,9 @@
 package http
 
 import (
-	"net/http"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 )
 
 func Get(url string) ([]byte, error) {
