@@ -5,12 +5,12 @@ import (
 	"os/signal"
 	"syscall"
 	"github.com/ontio/ontology/common/log"
-	"github.com/ontio/bonus/cmd"
 	"runtime"
 	"github.com/urfave/cli"
 	"github.com/ontio/saga/config"
 	"fmt"
 	"github.com/ontio/saga/restful"
+	"github.com/ontio/saga/cmd"
 )
 
 func setupAPP() *cli.App {
