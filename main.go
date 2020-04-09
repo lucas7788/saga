@@ -1,16 +1,16 @@
 package main
 
 import (
+	"fmt"
+	"github.com/ontio/ontology/common/log"
+	"github.com/ontio/saga/cmd"
+	"github.com/ontio/saga/config"
+	"github.com/ontio/saga/restful"
+	"github.com/urfave/cli"
 	"os"
 	"os/signal"
-	"syscall"
-	"github.com/ontio/ontology/common/log"
 	"runtime"
-	"github.com/urfave/cli"
-	"github.com/ontio/saga/config"
-	"fmt"
-	"github.com/ontio/saga/restful"
-	"github.com/ontio/saga/cmd"
+	"syscall"
 )
 
 func setupAPP() *cli.App {
