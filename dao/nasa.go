@@ -1,8 +1,8 @@
 package dao
 
 import (
-	_ "github.com/go-sql-driver/mysql"
 	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type NasaDB struct {
@@ -10,12 +10,12 @@ type NasaDB struct {
 }
 
 func NewNasaDB() (*NasaDB, error) {
-	db,err := NewDB()
+	db, err := NewDB()
 	if err != nil {
 		return nil, err
 	}
 	return &NasaDB{
-		db:db,
+		db: db,
 	}, nil
 }
 

@@ -9,7 +9,7 @@ import (
 	"sync"
 )
 
-var DefMap *sync.Map
+var DefMap = new(sync.Map)
 
 func Apod(ctx *routing.Context) error {
 	nas, err := getNasa()
