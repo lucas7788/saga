@@ -17,7 +17,7 @@ type Nasa struct {
 }
 
 func NewNasa() (*Nasa, error) {
-	num, err := dao.QueryRequestNum()
+	num, err := dao.DefDB.QueryRequestNum()
 	if err != nil {
 		return nil, err
 	}

@@ -1,9 +1,9 @@
 package cmd
 
 import (
+	"github.com/ontio/saga/config"
 	"github.com/urfave/cli"
 	"strings"
-	"github.com/ontio/saga/config"
 )
 
 var (
@@ -31,4 +31,3 @@ func GetFlagName(flag cli.Flag) string {
 	}
 	return strings.TrimSpace(strings.Split(name, ",")[0])
 }
-

@@ -32,6 +32,10 @@ func (this *SagaDB) QueryRequestNum() (int, error) {
 	return 0, nil
 }
 
+func (this *SagaDB) SearchApi(key string) {
+
+}
+
 func (this *SagaDB) Close() {
 	this.db.Close()
 }

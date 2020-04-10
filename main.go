@@ -6,13 +6,13 @@ import (
 	"github.com/ontio/ontology/common/log"
 	"github.com/ontio/saga/cmd"
 	"github.com/ontio/saga/config"
+	"github.com/ontio/saga/dao"
 	"github.com/ontio/saga/restful"
 	"github.com/urfave/cli"
 	"os"
 	"os/signal"
 	"runtime"
 	"syscall"
-	"github.com/ontio/saga/dao"
 )
 
 func setupAPP() *cli.App {
@@ -80,7 +80,7 @@ func initDB(ctx *cli.Context) error {
 		config.DefConfig.ProjectDBPassword = string(pwd)
 	}
 	var err error
-	dao.DefDB,err = dao.NewDB()
+	dao.DefDB, err = dao.NewDB()
 	if err != nil {
 		return err
 	}
