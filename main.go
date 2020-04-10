@@ -79,11 +79,15 @@ func initDB(ctx *cli.Context) error {
 		config.DefConfig.ProjectDBUser = userName
 		config.DefConfig.ProjectDBPassword = string(pwd)
 	}
-	var err error
-	dao.DefDB, err = dao.NewDB()
+	db, err := dao.NewDB()
 	if err != nil {
 		return err
 	}
+	err = db.Init()
+	if err != nil {
+		return err
+	}
+	dao.DefDB = db
 	return nil
 }
 
