@@ -24,13 +24,13 @@ func Apod(ctx *routing.Context) error {
 }
 
 func Feed(ctx *routing.Context) error {
-	startDate, endDate := ParseFeedParam(ctx)
+	params := GetParam(ctx, "startdate", "endate")
 	//TODO param check
 	nas, err := getNasa()
 	if err != nil {
 		return writeResponse(ctx, ResponsePack(INTER_ERROR, err))
 	}
-	res, err := nas.Feed(startDate, endDate)
+	res, err := nas.Feed(params[0], params[1])
 	if err != nil {
 		return writeResponse(ctx, ResponsePack(INTER_ERROR, err))
 	}

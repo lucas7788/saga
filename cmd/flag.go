@@ -17,10 +17,10 @@ var (
 		Usage: "restful server listening port `<number>`",
 		Value: 0,
 	}
-	ProjectIdFlag = cli.UintFlag{
-		Name:  "projectid",
-		Usage: "airdrop project id `<number>`",
-		Value: 0,
+	NetworkIdFlag = cli.UintFlag{
+		Name:  "networkid",
+		Usage: "Network id `<number>`. 1=ontology main net, 2=polaris test net, 3=testmode, and other for custom network",
+		Value: config.NETWORK_ID_MAIN_NET,
 	}
 )
 

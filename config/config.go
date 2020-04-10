@@ -1,6 +1,9 @@
 package config
 
-import "github.com/ontio/ontology/common/log"
+import (
+	"github.com/ontio/ontology-go-sdk"
+	"github.com/ontio/ontology/common/log"
+)
 
 var Version = ""
 
@@ -10,6 +13,8 @@ var (
 )
 
 type Config struct {
+	NetWorkId         uint
+	OntSdk            *ontology_go_sdk.OntologySdk
 	RestPort          uint   `json:"rest_port"`
 	Version           string `json:"version"`
 	ProjectDBHost     string `json:"projectdb_host"`
@@ -21,6 +26,7 @@ type Config struct {
 }
 
 var DefConfig = &Config{
-	RestPort: DEFAULT_REST_PORT,
-	Version:  "1.0.0",
+	RestPort:  DEFAULT_REST_PORT,
+	Version:   "1.0.0",
+	NetWorkId: NETWORK_ID_MAIN_NET,
 }

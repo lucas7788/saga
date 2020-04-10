@@ -1,0 +1,7 @@
+{
+  "rest_port": 30334,
+  "projectdb_url":"127.0.0.1:3306",
+  "projectdb_name":"appbackend",
+  "projectdb_user":"root",
+  "projectdb_password":"111111"
+}

@@ -14,21 +14,15 @@ var (
 
 type Nasa struct {
 	requestNum int
-	db         *dao.NasaDB
 }
 
 func NewNasa() (*Nasa, error) {
-	db, err := dao.NewNasaDB()
-	if err != nil {
-		return nil, err
-	}
-	num, err := db.QueryRequestNum()
+	num, err := dao.QueryRequestNum()
 	if err != nil {
 		return nil, err
 	}
 	return &Nasa{
 		requestNum: num,
-		db:         db,
 	}, nil
 }
 

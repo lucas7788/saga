@@ -2,8 +2,10 @@ package restful
 
 import "github.com/qiangxue/fasthttp-routing"
 
-func ParseFeedParam(ctx *routing.Context) (startDate, endDate string) {
-	startDate = ctx.Param("startdate")
-	endDate = ctx.Param("enddate")
-	return
+func GetParam(ctx *routing.Context, params ...string) []string {
+	res := make([]string, len(params))
+	for index,param := range params {
+		res[index] = ctx.Param(param)
+	}
+	return res
 }
