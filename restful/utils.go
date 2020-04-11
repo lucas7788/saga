@@ -1,13 +1,13 @@
 package restful
 
 import (
-	"github.com/qiangxue/fasthttp-routing"
 	"encoding/json"
 	"fmt"
+	"github.com/qiangxue/fasthttp-routing"
 )
 
-func GetParam(ctx *routing.Context, params ...string) (map[string]string, int64) {
-	res := make(map[string]string)
+func GetParam(ctx *routing.Context, params ...string) (map[string]interface{}, int64) {
+	res := make(map[string]interface{})
 	for _, param := range params {
 		res[param] = ctx.Param(param)
 		if res[param] == "" {

@@ -11,7 +11,6 @@ var (
 	feed = "https://api.nasa.gov/neo/rest/v1/feed?start_date=%s&end_date=%s&api_key=%s"
 )
 
-
 func Apod() ([]byte, error) {
 	url := fmt.Sprintf(apod, config.NASA_API_KEY)
 	return http.Get(url)

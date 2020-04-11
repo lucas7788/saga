@@ -6,15 +6,15 @@ import (
 	"strconv"
 )
 
-func GetApiInfoByPage(params map[string]string) map[string]interface{} {
-	pageNumStr,_ := params["pageNum"]
-	pageSizeStr,_ := params["pageSize"]
-	pageNum,err := strconv.Atoi(pageNumStr)
+func GetApiInfoByPage(params map[string]interface{}) map[string]interface{} {
+	pageNumStr, _ := params["pageNum"].(string)
+	pageSizeStr, _ := params["pageSize"].(string)
+	pageNum, err := strconv.Atoi(pageNumStr)
 	if err != nil {
 		return ResponsePack(PARA_ERROR, err)
 	}
-	pageSize,err := strconv.Atoi(pageSizeStr)
-	if err != nil {
+	pageSize, err := strconv.Atoi(pageSizeStr)
+	if err != nil || pageSize < 1 {
 		return ResponsePack(PARA_ERROR, err)
 	}
 	if pageNum < 1 {
@@ -28,12 +28,12 @@ func GetApiInfoByPage(params map[string]string) map[string]interface{} {
 	return ResponseSuccess(res)
 }
 
-func SearchApi(params map[string]string) map[string]interface{} {
-	key, ok := params["key"]
+func SearchApi(params map[string]interface{}) map[string]interface{} {
+	key, ok := params["key"].(string)
 	if !ok || key == "" {
 		return ResponsePack(PARA_ERROR, nil)
 	}
-	infos,err := dao.DefDB.SearchApi(key)
+	infos, err := dao.DefDB.SearchApi(key)
 	if err != nil {
 		return ResponsePack(INTER_ERROR, err)
 	}
@@ -45,7 +45,7 @@ func Pay(params map[string]interface{}) map[string]interface{} {
 	return nil
 }
 
-func Apod(params map[string]string) map[string]interface{} {
+func Apod(params map[string]interface{}) map[string]interface{} {
 	res, err := nasa.Apod()
 	if err != nil {
 		return ResponsePack(INTER_ERROR, err)
@@ -53,13 +53,13 @@ func Apod(params map[string]string) map[string]interface{} {
 	return ResponseSuccess(res)
 }
 
-func Feed(params map[string]string) map[string]interface{} {
+func Feed(params map[string]interface{}) map[string]interface{} {
 	//TODO param check
-	startDate, ok := params["startdate"]
-	if !ok || startDate == ""{
+	startDate, ok := params["startdate"].(string)
+	if !ok || startDate == "" {
 		return ResponsePack(PARA_ERROR, nil)
 	}
-	endDate, ok := params["enddate"]
+	endDate, ok := params["enddate"].(string)
 	if !ok || endDate == "" {
 		return ResponsePack(PARA_ERROR, nil)
 	}
