@@ -120,8 +120,11 @@ func waitToExit() {
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	go func() {
 		for sig := range sc {
-
-			log.Infof("bonus server received exit signal: %s.", sig.String())
+			err := dao.DefDB.Close()
+            if err != nil {
+            	log.Errorf("close db error: %s",err)
+			}
+			log.Infof("saga server received exit signal: %s.", sig.String())
 			close(exit)
 			break
 		}

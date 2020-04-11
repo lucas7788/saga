@@ -6,7 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/ontio/saga/config"
-	"github.com/ontio/saga/models"
+	"github.com/ontio/saga/models/tables"
 )
 
 type SagaDB struct {
@@ -31,38 +31,37 @@ func NewDB() (*SagaDB, error) {
 	}, nil
 }
 
+func initTables() []interface{} {
+	return []interface{}{
+		&tables.BuyRecord{},
+		&tables.APIInfo{},
+		&tables.APIKey{},
+		&tables.APIInterfaceInfo{},
+		&tables.ApiTestRecord{},
+	}
+}
 func (this *SagaDB) Init() error {
-	if !this.db.HasTable(&models.BuyRecord{}) {
-		db := this.db.CreateTable(&models.BuyRecord{})
-		if db.Error != nil {
-			return db.Error
+	tabs := initTables()
+	for _, table := range tabs {
+		if !this.db.HasTable(table) {
+			db := this.db.CreateTable(table)
+			if db.Error != nil {
+				return db.Error
+			}
+			this.db = db
 		}
-		this.db = db
-	}
-	if !this.db.HasTable(&models.APIInfo{}) {
-		db := this.db.CreateTable(&models.APIInfo{})
-		if db.Error != nil {
-			return db.Error
-		}
-		this.db = db
-	}
-	if !this.db.HasTable(&models.APIKey{}) {
-		db := this.db.CreateTable(&models.APIKey{})
-		if db.Error != nil {
-			return db.Error
-		}
-		this.db = db
 	}
 	return nil
 }
 
 func (this *SagaDB) DeleteTable() {
-	this.db.DropTableIfExists(&models.BuyRecord{})
-	this.db.DropTableIfExists(&models.APIInfo{})
-	this.db.DropTableIfExists(&models.APIKey{})
+	tabs := initTables()
+	for _, table := range tabs {
+		this.db.DropTableIfExists(table)
+	}
 }
 
-func (this *SagaDB) InsertApiInfo(apiInfo *models.APIInfo) error {
+func (this *SagaDB) InsertApiInfo(apiInfo *tables.APIInfo) error {
 	db := this.db.Create(apiInfo)
 	if db.Error != nil {
 		return db.Error
@@ -72,7 +71,7 @@ func (this *SagaDB) InsertApiInfo(apiInfo *models.APIInfo) error {
 }
 
 func (this *SagaDB) QueryPriceByApiId(ApiId int) (string, error) {
-	info := &models.APIInfo{}
+	info := &tables.APIInfo{}
 	db := this.db.Table("api_infos").Find(info, "api_id=?", ApiId)
 	if db.Error != nil {
 		return "", db.Error
@@ -80,7 +79,7 @@ func (this *SagaDB) QueryPriceByApiId(ApiId int) (string, error) {
 	return info.ApiPrice, nil
 }
 
-func (this *SagaDB) InsertBuyRecord(buyRecord *models.BuyRecord) error {
+func (this *SagaDB) InsertBuyRecord(buyRecord *tables.BuyRecord) error {
 	db := this.db.Create(buyRecord)
 	if db.Error != nil {
 		return db.Error
@@ -89,7 +88,7 @@ func (this *SagaDB) InsertBuyRecord(buyRecord *models.BuyRecord) error {
 	return nil
 }
 
-func (this *SagaDB) InsertApiKey(apiKey *models.APIKey) error {
+func (this *SagaDB) InsertApiKey(apiKey *tables.APIKey) error {
 	db := this.db.Create(apiKey)
 	if db.Error != nil {
 		return db.Error
@@ -99,7 +98,7 @@ func (this *SagaDB) InsertApiKey(apiKey *models.APIKey) error {
 }
 
 func (this *SagaDB) QueryRequestNum(apiKey string) (int, error) {
-	key := &models.APIKey{}
+	key := &tables.APIKey{}
 	db := this.db.Table("api_keys").Find(key, "api_key=?", apiKey)
 	if db.Error != nil {
 		return 0, db.Error
@@ -108,16 +107,25 @@ func (this *SagaDB) QueryRequestNum(apiKey string) (int, error) {
 	return key.UsedNum, nil
 }
 
-func (this *SagaDB) QueryApiInfoByPage(start, pageSize int) (infos []models.APIInfo, err error) {
-	db := this.db.Table("api_infos").Limit(pageSize).Find(&infos, "id>=?", start)
+func (this *SagaDB) QueryApiInfoByPage(start, pageSize int) (infos []tables.APIInfo, err error) {
+	db := this.db.Table("api_infos").Limit(pageSize).Find(&infos, "api_id>=?", start)
 	if db.Error != nil {
 		return nil, db.Error
 	}
 	return
 }
 
-func (this *SagaDB) SearchApi(key string) ([]models.APIInfo, error) {
-	var info []models.APIInfo
+func (this *SagaDB) QueryApiInfoByApiId(apiId uint)  (*tables.APIInfo, error){
+	info := tables.APIInfo{}
+	db := this.db.Table("api_infos").Find(&info, "api_id=?", apiId)
+	if db.Error != nil && db.Error.Error() != "record not found" {
+		return nil, db.Error
+	}
+	return &info, nil
+}
+
+func (this *SagaDB) SearchApi(key string) ([]tables.APIInfo, error) {
+	var info []tables.APIInfo
 	k := "%" + key + "%"
 	db := this.db.Table("api_infos").Where("api_desc like ?", k).Find(&info)
 	if db.Error != nil {
@@ -127,7 +135,7 @@ func (this *SagaDB) SearchApi(key string) ([]models.APIInfo, error) {
 }
 
 func (this *SagaDB) VerifyApiKey(apiKey string) error {
-	key := &models.APIKey{}
+	key := &tables.APIKey{}
 	db := this.db.Table("api_keys").Find(key, "api_key=?", apiKey)
 	if db.Error != nil {
 		return db.Error
@@ -139,6 +147,10 @@ func (this *SagaDB) VerifyApiKey(apiKey string) error {
 		return fmt.Errorf("Available times:%d, has used times: %d", key.Limit, key.UsedNum)
 	}
 	return nil
+}
+
+func QueryTestRecord() {
+
 }
 
 func (this *SagaDB) Close() error {

@@ -40,11 +40,6 @@ func SearchApi(params map[string]interface{}) map[string]interface{} {
 	return ResponseSuccess(infos)
 }
 
-func Pay(params map[string]interface{}) map[string]interface{} {
-
-	return nil
-}
-
 func Apod(params map[string]interface{}) map[string]interface{} {
 	res, err := nasa.Apod()
 	if err != nil {
