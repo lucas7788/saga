@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"github.com/ontio/saga/config"
+	"time"
+)
 
 type BuyRecord struct {
 	ID        uint `gorm:"primary_key"`
@@ -9,22 +12,23 @@ type BuyRecord struct {
 	UserName  string
 	TxHash    string
 	Price     string
-	APIId     string
+	ApiId     string
 	ApiKey    string
+	TxStatus  config.TxStatus
 }
 
 type APIInfo struct {
 	ID       uint `gorm:"primary_key"`
-	APIId    int
-	APIUrl   string
-	APIPrice string
-	APIDesc  string
+	ApiId    int
+	ApiUrl   string
+	ApiPrice string
+	ApiDesc  string
 }
 
 type APIKey struct {
 	ID       uint `gorm:"primary_key"`
 	ApiKey   string
-	APIId    int
+	ApiId    int
 	Limit    int
 	UsedNum  int
 	OntId    string

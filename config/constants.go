@@ -21,3 +21,11 @@ const (
 	NETWORK_ID_POLARIS_NET = 2
 	NETWORK_ID_SOLO_NET    = 3
 )
+
+type TxStatus uint8
+
+const (
+	Paying TxStatus = iota
+	PayFailed
+	PaySuccess
+)

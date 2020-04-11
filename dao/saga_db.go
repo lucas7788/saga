@@ -71,6 +71,15 @@ func (this *SagaDB) InsertApiInfo(apiInfo *models.APIInfo) error {
 	return nil
 }
 
+func (this *SagaDB) QueryPriceByApiId(ApiId int) (string, error) {
+	info := &models.APIInfo{}
+	db := this.db.Table("api_infos").Find(info, "api_id=?", ApiId)
+	if db.Error != nil {
+		return "", db.Error
+	}
+	return info.ApiPrice, nil
+}
+
 func (this *SagaDB) InsertBuyRecord(buyRecord *models.BuyRecord) error {
 	db := this.db.Create(buyRecord)
 	if db.Error != nil {
@@ -99,8 +108,22 @@ func (this *SagaDB) QueryRequestNum(apiKey string) (int, error) {
 	return key.UsedNum, nil
 }
 
-func (this *SagaDB) SearchApi(key string) {
-	this.db.Table("api_infos").Where("api_desc LIKE ?", "%key%")
+func (this *SagaDB) QueryApiInfoByPage(start, pageSize int) (infos []models.APIInfo, err error) {
+	db := this.db.Table("api_infos").Limit(pageSize).Find(&infos, "id>=?", start)
+	if db.Error != nil {
+		return nil, db.Error
+	}
+	return
+}
+
+func (this *SagaDB) SearchApi(key string) ([]models.APIInfo, error) {
+	var info []models.APIInfo
+	k := "%" + key + "%"
+	db := this.db.Table("api_infos").Where("api_desc like ?", k).Find(&info)
+	if db.Error != nil {
+		return nil, db.Error
+	}
+	return info, nil
 }
 
 func (this *SagaDB) VerifyApiKey(apiKey string) error {
@@ -113,7 +136,7 @@ func (this *SagaDB) VerifyApiKey(apiKey string) error {
 		return fmt.Errorf("invalid api key: %s", apiKey)
 	}
 	if key.UsedNum >= key.Limit {
-		return fmt.Errorf("Available times:%d, has used times: %s", key.Limit, key.UsedNum)
+		return fmt.Errorf("Available times:%d, has used times: %d", key.Limit, key.UsedNum)
 	}
 	return nil
 }

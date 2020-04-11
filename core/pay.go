@@ -6,7 +6,26 @@ import (
 	"github.com/ontio/ontology/common"
 	"github.com/ontio/ontology/core/types"
 	"github.com/ontio/saga/config"
+	"github.com/ontio/saga/models"
+	"github.com/ontio/saga/dao"
 )
+
+func PayAndQRCode(apiId int, userName string,ontid string) (error) {
+	price,err := dao.DefDB.QueryPriceByApiId(apiId)
+	if err != nil {
+		return err
+	}
+	br := &models.BuyRecord{
+		OntId:ontid,
+		UserName:userName,
+		Price: price,
+	}
+	err = dao.DefDB.InsertBuyRecord(br)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func PayOng(txHex string) error {
 	txHexBs, err := common.HexToBytes(txHex)
