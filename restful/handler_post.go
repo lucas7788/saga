@@ -18,11 +18,11 @@ func ApiTest(params map[string]interface{}) map[string]interface{} {
 	//if !ok {
 	//	return ResponsePack(PARA_ERROR, nil)
 	//}
-	apiId, err := strconv.Atoi(apiIdStr)
+	apiId, err := strconv.ParseUint(apiIdStr, 10, 64)
 	if err != nil {
 		return ResponsePack(PARA_ERROR, err)
 	}
-	dao.DefDB.QueryApiInfoByApiId(apiId)
+	dao.DefDB.QueryApiInfoByApiId(uint(apiId))
 	return nil
 }
 

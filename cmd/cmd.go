@@ -55,6 +55,7 @@ func updateConfigByCmd(ctx *cli.Context) error {
 	sdk := ontology_go_sdk.NewOntologySdk()
 	sdk.NewRpcClient().SetAddress(rpc)
 	config.DefConfig.OntSdk = sdk
+	return nil
 }
 
 func PrintErrorMsg(format string, a ...interface{}) {
