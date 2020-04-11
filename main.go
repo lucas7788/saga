@@ -121,8 +121,8 @@ func waitToExit() {
 	go func() {
 		for sig := range sc {
 			err := dao.DefDB.Close()
-            if err != nil {
-            	log.Errorf("close db error: %s",err)
+			if err != nil {
+				log.Errorf("close db error: %s", err)
 			}
 			log.Infof("saga server received exit signal: %s.", sig.String())
 			close(exit)

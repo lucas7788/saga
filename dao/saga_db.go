@@ -115,7 +115,7 @@ func (this *SagaDB) QueryApiInfoByPage(start, pageSize int) (infos []tables.APII
 	return
 }
 
-func (this *SagaDB) QueryApiInfoByApiId(apiId uint)  (*tables.APIInfo, error){
+func (this *SagaDB) QueryApiInfoByApiId(apiId uint) (*tables.APIInfo, error) {
 	info := tables.APIInfo{}
 	db := this.db.Table("api_infos").Find(&info, "api_id=?", apiId)
 	if db.Error != nil && db.Error.Error() != "record not found" {

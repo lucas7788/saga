@@ -1,12 +1,12 @@
 package restful
 
 import (
-	"strconv"
 	"github.com/ontio/saga/dao"
+	"strconv"
 )
 
 func ApiTest(params map[string]interface{}) map[string]interface{} {
-	apiIdStr,ok := params["apiId"].(string)
+	apiIdStr, ok := params["apiId"].(string)
 	if !ok {
 		return ResponsePack(PARA_ERROR, nil)
 	}
@@ -18,7 +18,7 @@ func ApiTest(params map[string]interface{}) map[string]interface{} {
 	//if !ok {
 	//	return ResponsePack(PARA_ERROR, nil)
 	//}
-	apiId,err := strconv.Atoi(apiIdStr)
+	apiId, err := strconv.Atoi(apiIdStr)
 	if err != nil {
 		return ResponsePack(PARA_ERROR, err)
 	}

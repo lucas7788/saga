@@ -2,8 +2,8 @@ package tables
 
 import (
 	"github.com/ontio/saga/config"
-	"time"
 	"github.com/ontio/saga/models"
+	"time"
 )
 
 type BuyRecord struct {
